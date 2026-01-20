@@ -7,10 +7,10 @@ app.use(express.json());
 app.post("/addTask", async (req, res) => {
   try {
     const { date, time, task, category, voice } = req.body;
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbzvkJcClTz9VVm8l7U0Iw2pEmYg_ScUZ2Orudk7pDKb4K3bV_DBd_kJP_mZGClQHEqu/exec";
 
+    const scriptUrl = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
     const params = new URLSearchParams({ date, time, task, category, voice });
-    const response = await axios.get(`${scriptUrl}?${params.toString()}`);
+    await axios.get(`${scriptUrl}?${params.toString()}`);
 
     return res.status(200).json({ status: "Success" });
   } catch (error) {
