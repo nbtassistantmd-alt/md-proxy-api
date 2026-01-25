@@ -50,6 +50,23 @@ app.post("/readTasks", async (req, res) => {
     }
 });
 
+// 2nd Phase edit. ADD PREPARATION (প্রিপারেশন নোট যোগ করা)
+app.post("/addPrep", async (req, res) => {
+    try {
+        const payload = { ...req.body, action: "addPrep" };
+        console.log("Adding Prep:", payload);
+
+        const response = await axios.post(SCRIPT_URL, payload, {
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            maxRedirects: 5
+        });
+
+        return res.status(200).json(response.data);
+    } catch (error) {
+        return res.status(500).json({ status: "Failed", error: error.message });
+    }
+});
+
 // 3. UPDATE TASK (কাজ 'Done' বা 'Reschedule' করা)
 app.post("/updateTask", async (req, res) => {
     try {
