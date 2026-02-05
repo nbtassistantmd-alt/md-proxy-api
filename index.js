@@ -34,23 +34,22 @@ app.post("/addTask", async (req, res) => {
 });
 
 app.post("/searchKB", async (req, res) => {
-  try {
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbwyUYTwvOdleFM_RBvn17cH6lT5xoe_OkeZB9cpW6c8LtbVpRIn_PmYB7WbN8ZhS7Qolg/exec",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(req.body),
-      }
-    );
+    try {
+        const payload = { ...req.body, action: "searchKB" }; // action ট্যাগ নিশ্চিত করা
+        console.log("Searching KB:", payload);
 
-    const data = await response.json();
-    res.status(200).json(data);
-  } catch (error) {
-    console.error("searchKB error:", error);
-    res.status(500).json({ status: "Error", message: error.message });
-  }
+        const response = await axios.post(SCRIPT_URL, payload, {
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            maxRedirects: 5
+        });
+
+        return res.status(200).json(response.data);
+    } catch (error) {
+        console.error("searchKB error:", error.message);
+        return res.status(500).json({ status: "Error", message: error.message });
+    }
 });
+
 
 
 // 2. READ TASKS (আজকের বা কালকের কাজ দেখা)
